@@ -6,7 +6,6 @@ type Transaction {
     paymentType: String!
     category: String!
     amount: Float!
-    location: String
     date: String!
 }
 
@@ -27,7 +26,6 @@ input CreateTransactionInput {
     category: String!
     amount: Float!
     date: String!
-    location: String
 }
 
 input UpdateTransactionInput {
@@ -37,7 +35,6 @@ input UpdateTransactionInput {
     category: String
     amount: Float
     date: String
-    location: String
 }
 `
 export default transactionTypeDef;

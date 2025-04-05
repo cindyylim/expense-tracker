@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { useMutation } from "@apollo/client";
 import { UPDATE_TRANSACTION } from "../graphql/mutations/transaction.mutation";
-import { useParams } from "react-router-dom";
-import { GET_TRANSACTION } from "../graphql/queries/transaction.query";
+import { useParams, useNavigate } from "react-router-dom";
+import { GET_CATEGORY_STATISTICS, GET_TRANSACTION } from "../graphql/queries/transaction.query";
 import { useQuery } from "@apollo/client";
+import { toast } from "react-hot-toast";
 
 const TransactionPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { data, loading, error } = useQuery(GET_TRANSACTION, {
     variables: { id: id },
   });
@@ -23,7 +25,7 @@ const TransactionPage = () => {
   const [updateTransaction, { loading: loadingUpdate }] = useMutation(
     UPDATE_TRANSACTION,
     {
-      refetchQueries: ["GetTransactions"],
+      refetchQueries: [{ query: GET_CATEGORY_STATISTICS }],
     }
   );
 

@@ -8,6 +8,8 @@ import { formatDate } from "../utils/formatDate";
 import { useMutation } from "@apollo/client";
 import { DELETE_TRANSACTION } from "../graphql/mutations/transaction.mutation";
 import { toast } from "react-hot-toast";
+import { GET_AUTHENTICATED_USER } from "../graphql/queries/user.query";
+import { useQuery } from "@apollo/client";
 
 const categoryColorMap = {
   income: "from-lime-700 to-lime-400",
@@ -16,7 +18,7 @@ const categoryColorMap = {
 
 const Card = ({ transaction }) => {
   const [deleteTransaction, { loading }] = useMutation(DELETE_TRANSACTION, {
-    refetchQueries: ["GetTransactions"],
+    refetchQueries: ["GetTransactions", "GetCategoryStatistics"],
   });
   let { category, amount, date, paymentType, description } = transaction;
   const cardClass = categoryColorMap[category];
@@ -26,6 +28,7 @@ const Card = ({ transaction }) => {
   paymentType = paymentType[0]?.toUpperCase() + paymentType.slice(1);
 
   const formattedDate = formatDate(date);
+  const {data: authData} = useQuery(GET_AUTHENTICATED_USER);
 
   const handleDelete = async () => {
     try {
@@ -73,7 +76,7 @@ const Card = ({ transaction }) => {
         </p>
         <div className="flex justify-between items-center">
           <p className="text-xs font-bold">{formattedDate}</p>
-          <img src={""} className="h-8 w-8 border rounded-full" alt="Avatar" />
+          <img src={authData?.authUser?.profilePicture} className="h-8 w-8 border rounded-full" alt="Avatar" />
         </div>
       </div>
     </div>

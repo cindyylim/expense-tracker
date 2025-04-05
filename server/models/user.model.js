@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
     },
     profilePicture: {
         type: String,
-        default: "https://via.placeholder.com/150",
+        default: "https://avatar.iran.liara.run/public/boy",
     },
     gender: {
         type: String,

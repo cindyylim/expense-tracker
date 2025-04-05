@@ -7,6 +7,7 @@ type Transaction {
     category: String!
     amount: Float!
     date: String!
+    user: User!
 }
 
 type Query {

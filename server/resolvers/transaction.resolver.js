@@ -1,5 +1,6 @@
 import { users } from "../dummyData/data.js";
 import Transaction from "../models/transaction.model.js";
+import User from "../models/user.model.js";
 
 const transactionResolver = {
   Query: {
@@ -77,6 +78,17 @@ const transactionResolver = {
             throw new Error(err.message || "Internal server error");
         }
     }
+  },
+  Transaction: {
+    user: async(parent) => {
+      try {
+        const user = await User.findById(parent.userId);
+        return user;
+      } catch (err) {
+        console.error("Error fetching user: ", err);
+        throw new Error(err.message || "Internal server error");
+      }
+    },
   },
 };
 

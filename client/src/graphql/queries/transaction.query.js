@@ -22,6 +22,11 @@ export const GET_TRANSACTION = gql`
             category
             amount
             date
+            user {
+                username
+                name
+                profilePicture
+            }
         }
     }
 `

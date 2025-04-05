@@ -13,6 +13,7 @@ const TransactionPage = () => {
   const { data, loading, error } = useQuery(GET_TRANSACTION, {
     variables: { id: id },
   });
+  console.log("data", data);
 
   const [formData, setFormData] = useState({
     description: "",

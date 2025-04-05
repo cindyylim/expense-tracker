@@ -1,4 +1,5 @@
 import { users } from "../dummyData/data.js";
+import Transaction from "../models/transaction.model.js";
 
 const transactionResolver = {
   Query: {
@@ -8,7 +9,9 @@ const transactionResolver = {
           throw new Error("Unauthorized");
         }
         const userId = await context.getUser()._id;
-        const transactions = await Transaction.find({ user: userId });
+        console.log("Fetching transactions for userId:", userId);
+        const transactions = await Transaction.find({ userId: userId });
+        console.log("Found transactions:", transactions);
         return transactions;
       } catch (err) {
         console.error("Error getting transactions: ", err);

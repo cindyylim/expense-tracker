@@ -7,6 +7,7 @@ import cors from "cors";
 import passport from "passport";
 import session from "express-session";
 import connectMongo from "connect-mongodb-session";
+import User from "./models/user.model.js";
 
 import mergedResolvers from "./resolvers/index.js";
 import mergedTypeDefs from "./typeDefs/index.js";
@@ -52,8 +53,7 @@ app.use(
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
       httpOnly: true, // this option prevents Cross-Site Scripting (XSS) attacks
       secure: process.env.NODE_ENV === "production",
-    },
-    store: store
+    }
   })
 )
 
@@ -66,6 +66,10 @@ const server = new ApolloServer({
   typeDefs: mergedTypeDefs,
   resolvers: mergedResolvers,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  formatError: (error) => {
+    console.error("Apollo Server error:", error);
+    return error;
+  },
 });
 
 // Ensure we wait for our server to start
@@ -76,15 +80,21 @@ app.use(express.json());
 // Set up our Express middleware to handle CORS, body parsing,
 // and our expressMiddleware function.
 app.use(
-  "/",
+  "/graphql",
+
   // expressMiddleware accepts the same arguments:
   // an Apollo Server instance and optional configuration options
   expressMiddleware(server, {
     context: ({ req, res }) => buildContext({ req, res, User })
   })
 );
+// npm run build will build your frontend app, and it will the optimized version of your app
+app.use(express.static(path.join(__dirname, "client/dist")));
 
+app.get("*", (req, res) => {
+	res.sendFile(path.join(__dirname, "client/dist", "index.html"));
+});
 // Modified server startup
 await connectDB();
 await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
-console.log(`🚀 Server ready at http://localhost:4000/`);
+console.log(`🚀 Server ready at http://localhost:4000/graphql`);

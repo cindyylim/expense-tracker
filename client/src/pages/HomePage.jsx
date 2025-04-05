@@ -5,6 +5,9 @@ import Cards from "../components/Cards";
 import TransactionForm from "../components/TransactionForm";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { MdLogout } from "react-icons/md";
+import { LOGOUT } from "../graphql/mutations/user.mutation";
+import { useMutation } from "@apollo/client";
+import { toast } from "react-hot-toast";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -17,19 +20,26 @@ const HomePage = () => {
 				data: [50, 50],
 				backgroundColor: ["rgba(151, 210, 168)", "rgba(236, 213, 10)"],
 				borderColor: ["rgba(151, 210, 168)", "rgba(236, 213, 10)"],
-				borderWidth: 100,
-				borderRadius: 50,
+				borderWidth: 1,
+				borderRadius: 0,
 				spacing: 0,
 				cutout: 100,
 			},
 		],
 	};
 
-	const handleLogout = () => {
-		console.log("Logging out...");
-	};
+	const [logout, { loading }] = useMutation(LOGOUT, {
+		refetchQueries: ["GetAuthenticatedUser"],
+	});
 
-	const loading = false;
+	const handleLogout = async() => {
+		try {
+            await logout();
+        } catch (error) {
+            console.error("Error logging out:", error);
+            toast.error(error.message || "Internal server error");
+        }
+	};
 
 	return (
 		<>

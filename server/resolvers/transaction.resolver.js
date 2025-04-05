@@ -15,7 +15,7 @@ const transactionResolver = {
         throw new Error(err.message || "Internal server error");
       }
     },
-    transaction: async (_, { transactionId }, _) => {
+    transaction: async (_, { transactionId }, context) => {
       try {
         const transaction = await Transaction.findById(transactionId);
         return transaction;

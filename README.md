@@ -71,26 +71,6 @@ npm run dev
 
 5. Open your browser and navigate to `http://localhost:3000`
 
-## Project Structure
-
-```
-expense-tracker/
-├── client/                 # React frontend
-│   ├── src/
-│   │   ├── components/     # Reusable UI components
-│   │   ├── graphql/        # GraphQL queries and mutations
-│   │   ├── pages/          # Page components
-│   │   └── main.jsx        # Entry point
-│   └── package.json
-├── server/                 # Express backend
-│   ├── models/             # Mongoose models
-│   ├── resolvers/          # GraphQL resolvers
-│   ├── typeDefs/           # GraphQL type definitions
-│   ├── passport/           # Passport configuration
-│   └── index.js            # Server entry point
-└── package.json
-```
-
 ## API Documentation
 
 ### GraphQL Queries
